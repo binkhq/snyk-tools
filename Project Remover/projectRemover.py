@@ -30,13 +30,18 @@ def sort_projects(data, origin):
 def project_lookup(project_id, org, api_key):
 
     url = "https://snyk.io/api/v1/org/{orgid}/project/{projectid}".format(orgid=org, projectid=project_id)
+    try:
+        response = http.request('GET', url, headers={
+            'Content-Type': 'application/json',
+            'Authorization': api_key
+        })
+        return json.loads(response.data.decode('UTF-8'))
 
-    response = http.request('GET', url, headers={
-        'Content-Type': 'application/json',
-        'Authorization': api_key
-    })
+    except:
 
-    return json.loads(response.data.decode('UTF-8'))
+        return None
+
+
 
 
 def delete_projects(data, org, api_key):
@@ -67,6 +72,9 @@ def delete_projects(data, org, api_key):
 def delete_project(project, org, api_key):
 
     project_details = project_lookup(project, org, api_key)
+    if project_details is None:
+        print("Project not Found")
+        sys.exit()
     deletion_prompt = "The project {project} has been selected for deletion, are you sure? y/n".format(project=project_details['name'])
     deletion_check = input(deletion_prompt)
     if deletion_check[:1] != "y":
