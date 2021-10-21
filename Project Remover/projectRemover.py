@@ -30,16 +30,19 @@ def sort_projects(data, origin):
 def project_lookup(project_id, org, api_key):
 
     url = "https://snyk.io/api/v1/org/{orgid}/project/{projectid}".format(orgid=org, projectid=project_id)
-    try:
-        response = http.request('GET', url, headers={
-            'Content-Type': 'application/json',
-            'Authorization': api_key
-        })
+
+    response = http.request('GET', url, headers={
+        'Content-Type': 'application/json',
+        'Authorization': api_key
+    })
+
+    if response.status == 404:
+        return None
+    else:
         return json.loads(response.data.decode('UTF-8'))
 
-    except:
 
-        return None
+
 
 
 
