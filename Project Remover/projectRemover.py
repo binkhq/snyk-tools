@@ -42,11 +42,6 @@ def project_lookup(project_id, org, api_key):
         return json.loads(response.data.decode('UTF-8'))
 
 
-
-
-
-
-
 def delete_projects(data, org, api_key):
     print("Projects selected for deletion: ")
 
@@ -112,7 +107,7 @@ def main():
         api_key = args.api
 
     if args.org is None:
-        print('please supply an org ID')
+        print('Please supply an org ID')
         sys.exit()
 
     if args.origin is None:
